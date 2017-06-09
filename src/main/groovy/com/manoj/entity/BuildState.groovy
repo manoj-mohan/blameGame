@@ -23,6 +23,7 @@ class BuildState {
     static constraints = {
         analyzedData nullable: true
         lastBrokenBy nullable: true, email: true
+        lastBrokenCommitHash nullable: true
     }
 
     GPathResult getXMLTree() {

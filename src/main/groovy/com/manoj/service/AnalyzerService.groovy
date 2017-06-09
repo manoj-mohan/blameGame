@@ -37,7 +37,7 @@ class AnalyzerService {
     @Transactional
     BuildState storeCurrentAnalysis(BuildAnalysis buildAnalysis) {
         BuildState.withNewSession {
-            BuildState state = BuildState.findByModule(buildAnalysis.moduleName)
+            BuildState state = BuildState.findByModule(buildAnalysis.moduleName) ?: new BuildState(module: buildAnalysis.moduleName, committers: [])
             state.analyzedData = getXMLStringToSave(buildAnalysis)
             if (buildAnalysis.currentlyBrokenTests.size()) {
                 if (buildAnalysis.isBroken) {
@@ -53,6 +53,7 @@ class AnalyzerService {
                 state.isBrokenOnLastCommit = false
                 state.committers.clear()
             }
+            log.debug("Saving current analysis...")
             state.save(failOnError: true, flush: true)
         }
     }

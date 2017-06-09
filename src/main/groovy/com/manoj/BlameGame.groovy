@@ -78,7 +78,7 @@ class BlameGame {
         log.info("Bootstrapping module(s)")
         configUtil.modulesToExecute().each { String module, String coverageFilePath ->
             BuildState.withNewSession {
-                BuildState.countByModule(module) ?: new BuildState(module: module).save()
+                BuildState.countByModule(module) ?: new BuildState(module: module).save(flush: true)
             }
         }
         log.info("Loading rules")
@@ -86,7 +86,7 @@ class BlameGame {
             Rule.withNewSession {
                 Rule rule = Rule.findByRuleType(ruleType) ?: new Rule(ruleType: ruleType)
                 rule.points = points
-                rule.save()
+                rule.save(flush: true)
             }
         }
         log.info("Setting current committer")
