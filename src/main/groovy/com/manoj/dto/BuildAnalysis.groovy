@@ -21,6 +21,6 @@ class BuildAnalysis {
     }
 
     Integer getCurrentFailureCount() {
-        previouslyBrokenTests*.@failures*.toInteger()?.sum { it } ?: 0
+        currentlyBrokenTests*.@failures*.toInteger()?.sum { it } ?: 0
     }
 }

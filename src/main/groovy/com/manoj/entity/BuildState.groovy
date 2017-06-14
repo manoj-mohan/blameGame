@@ -12,6 +12,8 @@ class BuildState {
     String lastBrokenBy
     String lastBrokenCommitHash
     Boolean isBrokenOnLastCommit = false
+    Date dateCreated
+    Date lastUpdated
 
     static hasMany = [committers: String]
 
@@ -28,6 +30,14 @@ class BuildState {
 
     GPathResult getXMLTree() {
         analyzedData ? new XmlSlurper().parseText(analyzedData) : null
+    }
+
+    Integer getErrorCount() {
+        analyzedData*.@errors*.toInteger()?.sum { it } ?: 0
+    }
+
+    Integer getFailureCount() {
+        analyzedData*.@failures*.toInteger()?.sum { it } ?: 0
     }
 
 

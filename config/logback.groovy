@@ -1,3 +1,8 @@
+import ch.qos.logback.classic.*
+import ch.qos.logback.classic.*
+
+import static ch.qos.logback.classic.Level.*
+
 scan("60 seconds")
 def logFile = "/home/manoj/Projects/POC/BlameGame/logs/BlameGame.log"
 
@@ -14,5 +19,5 @@ appender("File-Appender", FileAppender) {
     }
 }
 
-logger("com.manoj", ERROR, ["File-Appender"])
-//root(ERROR, ["Console-Appender"])
+logger("com.manoj", INFO, ["File-Appender"])
+root(INFO, ["Console-Appender"])

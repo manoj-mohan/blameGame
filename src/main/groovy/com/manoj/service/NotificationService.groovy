@@ -20,9 +20,9 @@ class NotificationService {
                 ("${Placeholder.CURRENT_TEST_RESULT_URL}"): "",
                 ("${Placeholder.COMMON_TEST_RESULT_URL}") : "",
         ]
-        log.trace("Sending Failure Mail")
+        log.debug("Sending Failure Mail for params: ${contentMap}")
         String body = Placeholder.getPopulatedContent(contentMap, configUtil.getBrokenBuildMailBody())
-//        mailerUtil.instance.sendMail(state.lastBrokenBy, configUtil.brokenBuildMailSubject, body)
+        mailerUtil.instance.sendMail(state.lastBrokenBy, configUtil.brokenBuildMailSubject, body)
     }
 
 

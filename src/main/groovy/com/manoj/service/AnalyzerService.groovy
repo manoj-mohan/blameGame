@@ -38,20 +38,22 @@ class AnalyzerService {
     BuildState storeCurrentAnalysis(BuildAnalysis buildAnalysis) {
         BuildState.withNewSession {
             BuildState state = BuildState.findByModule(buildAnalysis.moduleName) ?: new BuildState(module: buildAnalysis.moduleName, committers: [])
-            state.analyzedData = getXMLStringToSave(buildAnalysis)
-            if (buildAnalysis.currentlyBrokenTests.size()) {
-                if (buildAnalysis.isBroken) {
-                    state.isBrokenOnLastCommit = true
-                    state.lastBrokenBy = configUtil.currentCommitter
-                    state.lastBrokenCommitHash = configUtil.currentCommitHash
-                    state.committers.add(configUtil.currentCommitter)
-                    log.info("Updated blame list")
+            state.with {
+                if (buildAnalysis.currentlyBrokenTests.size()) {
+                    if (buildAnalysis.isBroken) {
+                        isBrokenOnLastCommit = true
+                        lastBrokenBy = configUtil.currentCommitter
+                        lastBrokenCommitHash = configUtil.currentCommitHash
+                        committers.add(configUtil.currentCommitter)
+                        log.info("Updated blame list")
+                    } else {
+                        isBrokenOnLastCommit = false
+                    }
                 } else {
-                    state.isBrokenOnLastCommit = false
+                    isBrokenOnLastCommit = false
+                    committers.clear()
                 }
-            } else {
-                state.isBrokenOnLastCommit = false
-                state.committers.clear()
+                analyzedData = getXMLStringToSave(buildAnalysis)
             }
             log.debug("Saving current analysis...")
             state.save(failOnError: true, flush: true)
@@ -96,26 +98,26 @@ class AnalyzerService {
                     List<String> oldTestNames = oldResult.children()*.@name
                     isBroken = (newResult.children()*.@name - oldTestNames) as Boolean
                 }
-                log.debug("Found Old Result for ${oldResult.@package}, ${oldResult.@name}, Broken: ${isBroken}")
+                log.info("Found Old Result for ${oldResult.@package}, ${oldResult.@name}, Broken: ${isBroken}")
             } else {
                 isBroken = true
             }
             isBroken
         }
-        log.info "IS BROKEN : ${isBroken}"
+        log.info("Is Broken: ${isBroken}")
         isBroken
     }
 
     @Transactional
     void updateScoreForBuild(BuildAnalysis buildAnalysis) {
-        Integer totalScore = 0;
+        Integer totalScore = 0
         Rule.withNewSession {
             Integer totalErrorsAdded = buildAnalysis.getCurrentErrorCount() - buildAnalysis.previousErrorCount
-            Integer errorScore = totalErrorsAdded * (totalErrorsAdded > 0 ? Rule.findByRuleType(REDUCED_TEST_CASES).points : Rule.findByRuleType(INCREASED_TEST_CASES).points)
+            Integer errorScore = totalErrorsAdded * (Rule.findByRuleType(totalErrorsAdded > 0 ? ADDED_BROKEN_TESTS : FIXED_BROKEN_TESTS).points)
             Integer totalFailuresAdded = buildAnalysis.currentFailureCount - buildAnalysis.previousFailureCount
-            Integer failureScore = totalFailuresAdded * (totalFailuresAdded > 0 ? Rule.findByRuleType(REDUCED_TEST_CASES).points : Rule.findByRuleType(INCREASED_TEST_CASES).points)
-            Integer buildScore = buildAnalysis.isBroken ? Rule.findByRuleType(BROKEN_BUILD).points : Rule.findByRuleType(SAFE_BUILD).points
-            totalScore = errorScore + failureScore + buildScore
+            Integer failureScore = totalFailuresAdded * (Rule.findByRuleType(totalFailuresAdded > 0 ? ADDED_BROKEN_TESTS : FIXED_BROKEN_TESTS).points)
+            Integer buildScore = Rule.findByRuleType(buildAnalysis.isBroken ? BROKEN_BUILD : SAFE_BUILD).points
+            totalScore = (totalErrorsAdded > 0 ? errorScore : errorScore * -1) + (totalFailuresAdded > 0 ? failureScore : failureScore * -1) + buildScore
             log.info("Total Errors: ${totalErrorsAdded}, Failures: ${totalFailuresAdded}, Build Score: ${buildScore}, Final Score: ${totalScore}")
         }
         Committer.withNewSession {

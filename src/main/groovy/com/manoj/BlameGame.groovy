@@ -10,11 +10,12 @@ import com.manoj.service.NotificationService
 import com.manoj.util.ConfigUtil
 import grails.orm.bootstrap.HibernateDatastoreSpringInitializer
 import grails.persistence.*
-import groovy.util.logging.Slf4j
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-@Slf4j
 class BlameGame {
 
+    static Logger log = LoggerFactory.getLogger(this);
     static ConfigUtil configUtil = ConfigUtil.instance
     static AnalyzerService analyzerService = AnalyzerService.instance
     static NotificationService notificationService = NotificationService.instance
@@ -45,8 +46,7 @@ class BlameGame {
         File file = new File("${configDirectory}")
         if (file.exists()) {
             configUtil.initialize("${configDirectory}/ApplicationConfig.groovy")
-            System.setProperty("Logback.configurationFile", "${configDirectory}/logback.groovy")
-//            PropertyConfigurator.configure(configUtil.config.toProperties())
+            System.setProperty("logback.configurationFile", "${configDirectory}/logback.groovy")
         } else {
             throw new FileNotFoundException("Config directory not specified correctly. Please check !!")
         }
@@ -111,14 +111,14 @@ class BlameGame {
     }
 
     static void saveRawResults(String moduleName, String coverageFilePath, String commitHash) {
-        log.debug("Saving raw results for hash ${commitHash}, ${coverageFilePath}")
+        log.info("Saving raw results for hash ${commitHash}, ${coverageFilePath}")
         try {
             String parentDirectory = "${configUtil.getRawResultsDirectoryPath()}/${commitHash}"
             new File("${parentDirectory}").mkdirs()
             File file = new File("${parentDirectory}/${moduleName}")
             file.text = new File(coverageFilePath).text
         } catch (Exception e) {
-            log.error("Unable to save raw results: ${e.getMessage()}")
+            e.printStackTrace()
         }
 
 

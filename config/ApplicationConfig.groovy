@@ -3,21 +3,21 @@ import com.manoj.util.Placeholder
 
 modules = [
         //<moduleName> : <absolute_path_of_coverage.xml_file>
-        "nimbus4-core"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
-        "nimbus4-admin"  : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
-        "nimbus4-api"    : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
-        "nimbus4-backend": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
-        "nimbus-shell"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
+//        "nimbus4-core"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
+        "nimbus4-admin": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
+//        "nimbus4-api"    : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
+//        "nimbus4-backend": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
+//        "nimbus-shell"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
 ]
 
 scoring {
     rules = [
-            (RuleType.SAFE_BUILD)             : 10,
-            (RuleType.BROKEN_BUILD)           : -20,
+            (RuleType.SAFE_BUILD)             : 1,
+            (RuleType.BROKEN_BUILD)           : -10,
             (RuleType.INCREASED_TEST_COVERAGE): 1,
             (RuleType.REDUCED_TEST_COVERAGE)  : -1,
-            (RuleType.INCREASED_TEST_CASES)   : -2,
-            (RuleType.REDUCED_TEST_CASES)     : -3
+            (RuleType.ADDED_BROKEN_TESTS)     : -3,
+            (RuleType.FIXED_BROKEN_TESTS)     : 3
     ]
     rebuildPointsOnChange = false
 }
@@ -62,7 +62,9 @@ dataSourceProperties = [
  ***/
 mail {
     configuation {
-
+        from = "intelligrape@gmail.com"
+        recipients = ["manoj.mohan@tothenew.com"]
+        smtpHost = "10.0.1.165"
     }
     templates {
         brokenBuild {
@@ -107,14 +109,4 @@ mail {
 }
 
 
-rawResultDirectory = "/home/manoj/Projects/POC/BlameGame"
-
-log4j {
-    appender.stdout = "org.apache.log4j.ConsoleAppender"
-    appender."stdout.layout" = "org.apache.log4j.PatternLayout"
-    appender.scrlog = "org.apache.log4j.FileAppender"
-    appender."scrlog.layout" = "org.apache.log4j.PatternLayout"
-    appender."scrlog.layout.ConversionPattern" = "%d %5p %c{1}:%L - %m%n"
-    appender."scrlog.file" = "rootscript.log"
-    rootLogger = "debug,scrlog,stdout"
-}
+rawResultDirectory = "/home/manoj/Projects/POC/BlameGame/rawResults"
