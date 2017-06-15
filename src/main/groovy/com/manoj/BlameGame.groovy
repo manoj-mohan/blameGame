@@ -21,8 +21,8 @@ class BlameGame {
     static NotificationService notificationService = NotificationService.instance
 
     static void main(String[] args) {
-        if (args?.size() < 2) {
-            throw new RuntimeException("PROGRAM EXECUTION INTERRUPTED !! MISSING CERTAIN ARGUMENTS  (Size is ${args?.size()} as opposed to minimum 2. Passed arguments are ${args})")
+        if (args?.size() < 4) {
+            throw new RuntimeException("PROGRAM EXECUTION INTERRUPTED !! MISSING CERTAIN ARGUMENTS  (Size is ${args?.size()} as opposed to minimum 4. Passed arguments are ${args})")
         }
         try {
             initializeApplication(args);
@@ -72,6 +72,7 @@ class BlameGame {
     private static void setExecutionParameters(String[] arguments) {
         configUtil.currentCommitter = arguments[1]
         configUtil.currentCommitHash = arguments[2]
+        configUtil.jenkinsBuildBaseURL = arguments[3]
     }
 
     private static void bootstrapConfigData() {

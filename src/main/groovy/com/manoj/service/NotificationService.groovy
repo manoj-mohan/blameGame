@@ -17,8 +17,8 @@ class NotificationService {
         Map<String, String> contentMap = [
                 ("${Placeholder.COMMITTER_LIST}")         : state.committers,
                 ("${Placeholder.MODULE_NAME}")            : state.module,
-                ("${Placeholder.CURRENT_TEST_RESULT_URL}"): "",
-                ("${Placeholder.COMMON_TEST_RESULT_URL}") : "",
+                ("${Placeholder.CURRENT_TEST_RESULT_URL}"): configUtil.getJenkinsBuildURL(state.module),
+                ("${Placeholder.COMMON_TEST_RESULT_URL}") : configUtil.getJenkinsJobURL(),
         ]
         log.debug("Sending Failure Mail for params: ${contentMap}")
         String body = Placeholder.getPopulatedContent(contentMap, configUtil.getBrokenBuildMailBody())

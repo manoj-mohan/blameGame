@@ -63,7 +63,7 @@ dataSourceProperties = [
 mail {
     configuation {
         from = "intelligrape@gmail.com"
-        recipients = ["manoj.mohan@tothenew.com"]
+        ccList = ["manoj.mohan@tothenew.com"]
         smtpHost = "10.0.1.165"
     }
     templates {
@@ -105,8 +105,9 @@ mail {
                     """
         }
     }
-    ccList = ["manoj.mohan@tothenew.com"]
 }
+
+jenkins.jobURL = "https://jenkins2.verecloud.com/job/test_unit/job/Branch_Integration_Unit_Test/"
 
 
 rawResultDirectory = "/home/manoj/Projects/POC/BlameGame/rawResults"

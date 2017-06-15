@@ -36,7 +36,11 @@ class ConfigUtil {
     }
 
     List<String> getCCList() {
-        getConfig().mail.ccList
+        getConfig().mail.configuation.ccList
+    }
+
+    String getMailSMTPHost() {
+        getConfig().mail.configuation.smtpHost
     }
 
     String getBrokenBuildMailBody() {
@@ -63,4 +67,15 @@ class ConfigUtil {
         getConfig().currentCommitHash
     }
 
+    void setJenkinsBuildBaseURL(String basePath) {
+        config.jenkins.build.baseURL = "${basePath}"
+    }
+
+    String getJenkinsBuildURL(String moduleName) {
+        "${config.jenkins.build.baseURL}/Nimbus_${moduleName.tokenize("-").last()?.capitalize()}_Unit_Test_Report"
+    }
+
+    String getJenkinsJobURL() {
+        config.jenkins.jobURL
+    }
 }
