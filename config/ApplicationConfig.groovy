@@ -2,12 +2,12 @@ import com.manoj.enums.RuleType
 import com.manoj.util.Placeholder
 
 modules = [
-        //<moduleName> : <absolute_path_of_coverage.xml_file>
-//        "nimbus4-core"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
-        "nimbus4-admin": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
-//        "nimbus4-api"    : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
-//        "nimbus4-backend": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
-//        "nimbus-shell"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
+//        <moduleName> : <absolute_path_of_coverage.xml_file>
+"nimbus4-core"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-admin"  : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-api"    : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-backend": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
+"nimbus-shell"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
 ]
 
 scoring {
@@ -25,7 +25,7 @@ scoring {
 
 dataSourceProperties = [
         'dataSource.username'       : "root",
-        'dataSource.password'       : "igdefault",
+        'dataSource.password'       : "admin",
         'dataSource.dbCreate'       : "update", // one of 'create', 'create-drop', 'update', 'validate',''
         'dataSource.url'            : "jdbc:mysql://localhost:3306/blameGame?autoReconnect=true",
         'dataSource.logSql'         : false,
@@ -71,26 +71,27 @@ mail {
             subject = "Unit Test Cases Broken for [${Placeholder.MODULE_NAME}]"
             body = """
                   
-                     Hey,
-                     
-                        You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit. Please fix the testcases ASAP as this commit drastically reduces our quality index.
-                        
-                        Here is a list of people who have "contributed" in making this build fail
-                        [${Placeholder.COMMITTER_LIST}]                       
-                        
-                        To find all breaking cases currently, please visit:
-                        [${Placeholder.CURRENT_TEST_RESULT_URL}]
+ Hey,
+ 
+    You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit. Please fix the testcases ASAP as this commit drastically reduces our quality index.
+    
+    Here is a list of people who have "contributed" in making this build fail
+    ${Placeholder.COMMITTER_LIST}                       
+    
+    To find all breaking cases currently, please visit:
+    ${Placeholder.CURRENT_TEST_RESULT_URL}
 
 
-                        PS: If the above URL doesn't work, the report has been deleted by Jenkins as part of housekeeping. Please visit the below URL and pull out the report from the latest build.
-                        [${Placeholder.COMMON_TEST_RESULT_URL}]
-                    """
+    PS: If the above URL doesn't work, the report has been deleted by Jenkins as part of housekeeping. Please visit the below URL and pull out the report from the latest build.
+    ${Placeholder.COMMON_TEST_RESULT_URL}
+"""
         }
+
         exception {
             subject = "Unable to complete Analysis for Module []"
             body = """
                     Hi,
-                    Unfortunately we were not able to finish analysis of [COMMITTER] 's commits for the module [MODULE_NAME].
+                        Unfortunately we were not able to finish analysis of [COMMITTER] 's commits for the module [MODULE_NAME].
                     Please contact manoj.mohan@tothenew.com to get it resolved ASAP.
                     
                     

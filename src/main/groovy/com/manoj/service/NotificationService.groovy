@@ -15,14 +15,15 @@ class NotificationService {
 
     public void sendBrokenBuildEmail(BuildState state) {
         Map<String, String> contentMap = [
-                ("${Placeholder.COMMITTER_LIST}")         : state.committers,
-                ("${Placeholder.MODULE_NAME}")            : state.module,
-                ("${Placeholder.CURRENT_TEST_RESULT_URL}"): configUtil.getJenkinsBuildURL(state.module),
-                ("${Placeholder.COMMON_TEST_RESULT_URL}") : configUtil.getJenkinsJobURL(),
+                (Placeholder.COMMITTER_LIST)         : state.committers.join(System.getProperty("line.separator")),
+                (Placeholder.MODULE_NAME)            : state.module,
+                (Placeholder.CURRENT_TEST_RESULT_URL): configUtil.getJenkinsBuildURL(state.module),
+                (Placeholder.COMMON_TEST_RESULT_URL) : configUtil.getJenkinsJobURL(),
         ]
         log.debug("Sending Failure Mail for params: ${contentMap}")
         String body = Placeholder.getPopulatedContent(contentMap, configUtil.getBrokenBuildMailBody())
-        mailerUtil.instance.sendMail(state.lastBrokenBy, configUtil.brokenBuildMailSubject, body)
+        String subject = Placeholder.getPopulatedContent(contentMap, configUtil.brokenBuildMailSubject)
+        mailerUtil.instance.sendMail(state.lastBrokenBy, subject, body)
     }
 
 
