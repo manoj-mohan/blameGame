@@ -73,7 +73,9 @@ mail {
                   
  Hey,
  
-    You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit. Please fix the testcases ASAP as this commit drastically reduces our quality index.
+    You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit (${Placeholder.COMMIT_HASH}). 
+
+    Please fix the testcases ASAP as this commit drastically reduces our quality index.
     
     Here is a list of people who have "contributed" in making this build fail
     ${Placeholder.COMMITTER_LIST}                       
@@ -88,6 +90,7 @@ mail {
         }
 
         exception {
+            to = "manoj.mohan@tothenew.com"
             subject = "Unable to complete Analysis for Module []"
             body = """
                     Hi,
@@ -111,4 +114,4 @@ mail {
 jenkins.jobURL = "https://jenkins2.verecloud.com/job/test_unit/job/Branch_Integration_Unit_Test/"
 
 
-rawResultDirectory = "/home/manoj/Projects/POC/BlameGame/rawResults"
+rawResultDirectory = "/Users/manoj/Projects/POC/BlameGame/rawResults"

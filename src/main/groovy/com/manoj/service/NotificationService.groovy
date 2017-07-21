@@ -13,10 +13,11 @@ class NotificationService {
     ConfigUtil configUtil = ConfigUtil.instance
     MailerUtil mailerUtil = MailerUtil.instance
 
-    public void sendBrokenBuildEmail(BuildState state) {
+    void sendBrokenBuildEmail(BuildState state) {
         Map<String, String> contentMap = [
                 (Placeholder.COMMITTER_LIST)         : state.committers.join(System.getProperty("line.separator")),
                 (Placeholder.MODULE_NAME)            : state.module,
+                (Placeholder.COMMIT_HASH)            : configUtil.getCurrentCommitHash(),
                 (Placeholder.CURRENT_TEST_RESULT_URL): configUtil.getJenkinsBuildURL(state.module),
                 (Placeholder.COMMON_TEST_RESULT_URL) : configUtil.getJenkinsJobURL(),
         ]
@@ -24,6 +25,19 @@ class NotificationService {
         String body = Placeholder.getPopulatedContent(contentMap, configUtil.getBrokenBuildMailBody())
         String subject = Placeholder.getPopulatedContent(contentMap, configUtil.brokenBuildMailSubject)
         mailerUtil.instance.sendMail(state.lastBrokenBy, subject, body)
+    }
+
+    void sendErrorMail(Throwable throwable) {
+        Map<String, String> contentMap = [
+                (Placeholder.ERROR)      : throwable.getMessage(),
+                (Placeholder.STACKTRACE) : throwable.getStackTrace().toString(),
+                (Placeholder.COMMITTER)  : configUtil.currentCommitter,
+                (Placeholder.MODULE_NAME): configUtil.currentModule
+        ]
+        log.debug("Sending ERROR Mail for params: ${contentMap}")
+        String body = Placeholder.getPopulatedContent(contentMap, configUtil.errorAlertBody)
+        String subject = Placeholder.getPopulatedContent(contentMap, configUtil.errorAlertSubject)
+        mailerUtil.instance.sendMail(configUtil.errorAlerter, subject, body)
     }
 
 

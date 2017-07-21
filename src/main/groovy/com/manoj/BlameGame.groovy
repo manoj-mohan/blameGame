@@ -31,6 +31,7 @@ class BlameGame {
             log.info "***************** Blame Game Completed ********************"
         } catch (Exception e) {
             e.printStackTrace()
+            notificationService.sendErrorMail(e)
         }
     }
 
@@ -96,6 +97,7 @@ class BlameGame {
     static void goBlame(String commitHash) {
         configUtil.modulesToExecute().each { String moduleName, String coverageFilePath ->
             log.info("Running analysis for ${moduleName}")
+            configUtil.currentModule = moduleName
             if (analyzerService.doesFileExistForAnalysis(coverageFilePath)) {
                 BuildAnalysis buildAnalysis = analyzerService.analyzeTestCases(moduleName, coverageFilePath)
                 BuildState state = analyzerService.storeCurrentAnalysis(buildAnalysis)
@@ -119,6 +121,7 @@ class BlameGame {
             File file = new File("${parentDirectory}/${moduleName}")
             file.text = new File(coverageFilePath).text
         } catch (Exception e) {
+            log.error("Error while saving RAW results..")
             e.printStackTrace()
         }
     }

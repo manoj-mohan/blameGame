@@ -2,9 +2,13 @@ package com.manoj.util
 
 class Placeholder {
     static final String MODULE_NAME = "[MODULE_NAME]"
+    static final String COMMITTER = "[COMMITTER]"
+    static final String COMMIT_HASH = "[COMMIT_HASH]"
     static final String COMMITTER_LIST = "[COMMITTER_LIST]"
     static final String CURRENT_TEST_RESULT_URL = "[CURRENT_TEST_RESULT_URL]"
     static final String COMMON_TEST_RESULT_URL = "[COMMON_TEST_RESULT_URL]"
+    static final String ERROR = "[ERROR]"
+    static final String STACKTRACE = "[STACKTRACE]"
     static final String EMPTY_PLACEHOLDER_REPLACEMENT_REGEX = "(\\[[A-Z]*_?[A-Z]*\\])"
 
     static String getPopulatedContent(Map parameters, String bodyTemplate, Boolean replaceEmptyPlaceHolders = true) {

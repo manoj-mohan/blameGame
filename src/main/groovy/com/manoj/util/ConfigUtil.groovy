@@ -31,6 +31,14 @@ class ConfigUtil {
         getConfig().committer
     }
 
+    void setCurrentModule(String module) {
+        getConfig().currentModule = module
+    }
+
+    String getCurrentModule() {
+        getConfig().currentModule
+    }
+
     Map<RuleType, Double> getScoreRules() {
         getConfig().scoring.rules
     }
@@ -77,5 +85,17 @@ class ConfigUtil {
 
     String getJenkinsJobURL() {
         config.jenkins.jobURL
+    }
+
+    String getErrorAlerter() {
+        getConfig().mail.templates.exception.to
+    }
+
+    String getErrorAlertSubject() {
+        getConfig().mail.templates.exception.subject
+    }
+
+    String getErrorAlertBody() {
+        getConfig().mail.templates.exception.body
     }
 }

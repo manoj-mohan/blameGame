@@ -39,7 +39,5 @@ class BuildState {
     Integer getFailureCount() {
         analyzedData*.@failures*.toInteger()?.sum { it } ?: 0
     }
-
-
 }
 
