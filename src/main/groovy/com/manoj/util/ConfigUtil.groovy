@@ -98,4 +98,12 @@ class ConfigUtil {
     String getErrorAlertBody() {
         getConfig().mail.templates.exception.body
     }
+
+    void setBasePathForFilesToAnalyze(String basePath) {
+        basePath ? getConfig().basePath = basePath : null
+    }
+
+    String getBasePathForFilesToAnalyze() {
+        getConfig().basePath
+    }
 }

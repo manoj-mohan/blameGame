@@ -1,13 +1,19 @@
 import com.manoj.enums.RuleType
 import com.manoj.util.Placeholder
 
+
+
+
+
+basePath = '/Users/manoj/Projects/Westcon/nimbus4'
+
 modules = [
-//        <moduleName> : <absolute_path_of_coverage.xml_file>
-"nimbus4-core"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
-"nimbus4-admin"  : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
-"nimbus4-api"    : "/home/manoj/Projects/Westcon/nimbus4/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
-"nimbus4-backend": "/home/manoj/Projects/Westcon/nimbus4/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
-"nimbus-shell"   : "/home/manoj/Projects/Westcon/nimbus4/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
+//<moduleName>   : <relative_path_of_coverage.xml_file>
+"nimbus4-core"   : "/nimbus4-core/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-admin"  : "/nimbus4-admin/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-api"    : "/nimbus4-api/target/test-reports/TESTS-TestSuites.xml",
+"nimbus4-backend": "/nimbus4-backend/target/test-reports/TESTS-TestSuites.xml",
+"nimbus-shell"   : "/nimbus-shell/target/test-reports/TESTS-TestSuites.xml"
 ]
 
 scoring {
@@ -73,7 +79,9 @@ mail {
                   
  Hey,
  
-    You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit (${Placeholder.COMMIT_HASH}). 
+    You are receiving this auto-generated mail as Unit Test Cases for the module have been broken by your last commit (${
+                Placeholder.COMMIT_HASH
+            }). 
 
     Please fix the testcases ASAP as this commit drastically reduces our quality index.
     

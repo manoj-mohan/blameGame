@@ -39,6 +39,4 @@ class NotificationService {
         String subject = Placeholder.getPopulatedContent(contentMap, configUtil.errorAlertSubject)
         mailerUtil.instance.sendMail(configUtil.errorAlerter, subject, body)
     }
-
-
 }

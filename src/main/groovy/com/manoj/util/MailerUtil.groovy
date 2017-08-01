@@ -42,7 +42,7 @@ class MailerUtil {
     private void initializeMailProperties() {
         log.trace("Mailing Properties now is : ${mailProperties}")
         if (!mailProperties) {
-            log.debug("Mailing Properties wern't set .. setting")
+            log.debug("Mailing Properties weren't set .. setting")
             mailProperties = System.getProperties();
             mailProperties.setProperty("mail.smtp.host", configUtil.getMailSMTPHost())
             mailProperties.put("mail.smtp.localhost", "127.0.0.1");

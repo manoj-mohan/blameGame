@@ -39,7 +39,7 @@ class BlameGame {
         setupConfigAndLogging(arguments[0])
         configureDataSource()
         bootstrapConfigData()
-        setExecutionParameters(arguments)
+        setExecutionParameters(arguments as List)
         sanitizeRawResults()
     }
 
@@ -70,10 +70,11 @@ class BlameGame {
         }
     }
 
-    private static void setExecutionParameters(String[] arguments) {
-        configUtil.currentCommitter = arguments[1]
-        configUtil.currentCommitHash = arguments[2]
-        configUtil.jenkinsBuildBaseURL = arguments[3]
+    private static void setExecutionParameters(List<String> arguments) {
+        configUtil.currentCommitter = arguments.getAt(1)
+        configUtil.currentCommitHash = arguments.getAt(2)
+        configUtil.jenkinsBuildBaseURL = arguments.getAt(3)
+        configUtil.basePathForFilesToAnalyze = arguments.getAt(4)
     }
 
     private static void bootstrapConfigData() {
@@ -91,13 +92,13 @@ class BlameGame {
                 rule.save(flush: true)
             }
         }
-        log.info("Setting current committer")
     }
 
     static void goBlame(String commitHash) {
         configUtil.modulesToExecute().each { String moduleName, String coverageFilePath ->
-            log.info("Running analysis for ${moduleName}")
             configUtil.currentModule = moduleName
+            coverageFilePath = "${configUtil.basePathForFilesToAnalyze}${coverageFilePath}"
+            log.info("Running analysis for ${moduleName}, Path: ${coverageFilePath}")
             if (analyzerService.doesFileExistForAnalysis(coverageFilePath)) {
                 BuildAnalysis buildAnalysis = analyzerService.analyzeTestCases(moduleName, coverageFilePath)
                 BuildState state = analyzerService.storeCurrentAnalysis(buildAnalysis)
